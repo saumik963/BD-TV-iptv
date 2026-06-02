@@ -1,0 +1,6 @@
+{
+  "name": "Lumina TV",
+  "description": "A premium Live TV streaming web application to watch M3U playlists with HLS stream support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
