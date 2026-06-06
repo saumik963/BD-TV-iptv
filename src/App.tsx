@@ -1,18 +1,18 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { 
-  Tv, 
-  Search, 
-  Heart, 
-  SlidersHorizontal, 
-  Menu, 
-  X, 
-  Settings, 
-  ChevronRight, 
-  Grid, 
-  Compass, 
-  RefreshCw, 
-  AlertCircle, 
-  FileWarning, 
+import {
+  Tv,
+  Search,
+  Heart,
+  SlidersHorizontal,
+  Menu,
+  X,
+  Settings,
+  ChevronRight,
+  Grid,
+  Compass,
+  RefreshCw,
+  AlertCircle,
+  FileWarning,
   Info,
   Sliders,
   Filter
@@ -94,7 +94,7 @@ export default function App() {
           // If direct fetch fails, we immediately fallback to local
           throw new Error("Network unreachable. Accessing fallback playlist.");
         });
-      
+
       clearTimeout(timeoutId);
 
       if (!response.ok) {
@@ -103,7 +103,7 @@ export default function App() {
 
       const content = await response.text();
       const parsed = parseM3U(content);
-      
+
       if (parsed.length === 0) {
         throw new Error("No channels found in M3U file contents.");
       }
@@ -225,8 +225,8 @@ export default function App() {
     // Real-time Search by Name or Category
     if (searchQuery.trim() !== '') {
       const query = searchQuery.toLowerCase().trim();
-      result = result.filter(ch => 
-        ch.name.toLowerCase().includes(query) || 
+      result = result.filter(ch =>
+        ch.name.toLowerCase().includes(query) ||
         ch.category.toLowerCase().includes(query)
       );
     }
@@ -310,13 +310,13 @@ export default function App() {
     }, { threshold: 0.1, rootMargin: '100px' });
 
     observer.observe(loadMoreRef.current);
-    
+
     return () => observer.disconnect();
   }, [visibleCount, filteredAndSortedChannels.length]);
 
   return (
     <div className="min-h-screen bg-[#070a13] text-slate-100 flex flex-col relative font-sans selection:bg-cyan-500/20 overflow-x-hidden w-full">
-      
+
       {/* Background neon blurs */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-cyan-600/5 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[140px] pointer-events-none -z-10" />
@@ -332,15 +332,15 @@ export default function App() {
               BD<span className="text-white not-italic font-extrabold text-[#FFFFFF]">-TV</span>
             </span>
           </div>
-          
+
           <nav className="hidden lg:flex items-center gap-1.5 bg-gray-900/60 p-1 rounded-lg border border-gray-800">
-            <button 
+            <button
               onClick={() => { setShowFavoritesOnly(false); setSelectedCategory('All'); }}
               className={`px-3 py-1 rounded text-[10px] font-bold uppercase transition-all ${!showFavoritesOnly && selectedCategory === 'All' ? 'bg-cyan-500 text-black shadow-sm' : 'text-slate-400 hover:text-white'}`}
             >
               Watch Live
             </button>
-            <button 
+            <button
               onClick={() => { setShowFavoritesOnly(true); }}
               className={`px-3 py-1 rounded text-[10px] font-bold uppercase transition-all flex items-center gap-1 ${showFavoritesOnly ? 'bg-rose-500 text-white shadow-sm' : 'text-slate-400 hover:text-white'}`}
             >
@@ -364,7 +364,7 @@ export default function App() {
                 className="bg-transparent text-[11px] w-48 focus:outline-none text-white placeholder-gray-500 font-bold"
               />
               {searchQuery && (
-                <button 
+                <button
                   onClick={() => setSearchQuery('')}
                   className="p-0.5 rounded-full text-slate-400 hover:text-white"
                 >
@@ -374,7 +374,7 @@ export default function App() {
             </div>
           </div>
 
-          <button 
+          <button
             onClick={() => fetchPlaylist(playlistUrl, false)}
             disabled={refreshing}
             className={`p-2 rounded-lg border border-gray-800 bg-gray-900 text-slate-400 hover:text-white hover:bg-gray-850 transition-all ${refreshing ? 'animate-spin' : ''}`}
@@ -383,7 +383,7 @@ export default function App() {
             <RefreshCw className="w-3.5 h-3.5" />
           </button>
 
-          <button 
+          <button
             onClick={() => setShowSettings(true)}
             className="p-2 rounded-lg border border-gray-800 bg-gray-900 text-slate-400 hover:text-white hover:bg-gray-850 transition-all active:scale-95 duration-150"
             title="Playlist Configuration"
@@ -403,10 +403,10 @@ export default function App() {
 
       {/* Main Single Page structural container */}
       <main className="flex-grow flex flex-col lg:flex-row w-full max-w-[1720px] mx-auto p-3 md:p-6 gap-4 md:gap-6 min-w-0">
-        
+
         {/* Left Side: Live TV Player & Large Viewport Section */}
         <div className="flex-grow flex flex-col min-w-0 w-full overflow-visible">
-          
+
           {/* Header info in dev Fallback Mode */}
           {errorString && (
             <div className="mb-4 p-3.5 bg-emerald-950/20 border border-emerald-500/20 rounded-2xl flex items-center justify-between text-xs text-emerald-400 leading-relaxed">
@@ -414,7 +414,7 @@ export default function App() {
                 <Info className="w-4 h-4 flex-shrink-0" />
                 <span>{errorString} Enjoy premium pre-loaded news & entertainment.</span>
               </div>
-              <button 
+              <button
                 onClick={() => setErrorString(null)}
                 className="p-1 hover:bg-emerald-500/10 text-emerald-300 rounded"
               >
@@ -424,7 +424,7 @@ export default function App() {
           )}
 
           {/* Core Streaming player viewport */}
-          <LivePlayer 
+          <LivePlayer
             channel={activeChannel}
             onStreamError={handleStreamError}
             onStreamSuccess={handleStreamSuccess}
@@ -435,7 +435,7 @@ export default function App() {
           />
 
           {/* Quick interactive recently watched row */}
-          <RecentlyWatched 
+          <RecentlyWatched
             channels={recentlyWatched}
             onSelectChannel={handleSelectChannel}
             activeChannelId={activeChannel?.id}
@@ -456,28 +456,26 @@ export default function App() {
 
           {/* Core Categories and Sorting bar */}
           <div className="mt-8 flex flex-col gap-4">
-            
+
             {/* Swipable Row with common playlist filters */}
             <div className="flex items-center justify-between gap-4 border-b border-gray-800 pb-3">
               <div className="flex items-center gap-1 overflow-x-auto no-scrollbar scrollbar-none py-1 flex-grow">
                 <button
                   onClick={() => { setSelectedCategory('All'); setShowFavoritesOnly(false); }}
-                  className={`px-2.5 py-1 rounded text-[9px] font-bold uppercase transition-all whitespace-nowrap ${
-                    !showFavoritesOnly && selectedCategory === 'All'
-                      ? 'bg-cyan-500 text-black shadow-md'
-                      : 'bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white'
-                  }`}
+                  className={`px-2.5 py-1 rounded text-[9px] font-bold uppercase transition-all whitespace-nowrap ${!showFavoritesOnly && selectedCategory === 'All'
+                    ? 'bg-cyan-500 text-black shadow-md'
+                    : 'bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white'
+                    }`}
                 >
                   ALL CHANNELS ({channels.length})
                 </button>
 
                 <button
                   onClick={() => { setShowFavoritesOnly(true); }}
-                  className={`px-2.5 py-1 rounded text-[9px] font-bold uppercase transition-all whitespace-nowrap flex items-center gap-1 ${
-                    showFavoritesOnly 
-                      ? 'bg-rose-500 text-white shadow-md' 
-                      : 'bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white'
-                  }`}
+                  className={`px-2.5 py-1 rounded text-[9px] font-bold uppercase transition-all whitespace-nowrap flex items-center gap-1 ${showFavoritesOnly
+                    ? 'bg-rose-500 text-white shadow-md'
+                    : 'bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white'
+                    }`}
                 >
                   <Heart className="w-2.5 h-2.5 fill-current" />
                   FAVORITES ({favorites.length})
@@ -493,13 +491,12 @@ export default function App() {
                       key={cat}
                       disabled={!isAvailable}
                       onClick={() => { setSelectedCategory(cat); setShowFavoritesOnly(false); }}
-                      className={`px-2.5 py-1 rounded text-[9px] font-bold uppercase transition-all whitespace-nowrap ${
-                        isCurActive
-                          ? 'bg-cyan-500 text-black shadow-md'
-                          : isAvailable
-                            ? 'bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white'
-                            : 'opacity-40 cursor-not-allowed hidden'
-                      }`}
+                      className={`px-2.5 py-1 rounded text-[9px] font-bold uppercase transition-all whitespace-nowrap ${isCurActive
+                        ? 'bg-cyan-500 text-black shadow-md'
+                        : isAvailable
+                          ? 'bg-gray-800/80 hover:bg-gray-700 text-gray-300 hover:text-white'
+                          : 'opacity-40 cursor-not-allowed hidden'
+                        }`}
                     >
                       {cat}
                     </button>
@@ -527,11 +524,10 @@ export default function App() {
                               setShowFavoritesOnly(false);
                               setShowCategoryDropdown(false);
                             }}
-                            className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors truncate ${
-                              selectedCategory === c && !showFavoritesOnly 
-                                ? 'bg-cyan-500/10 text-cyan-400 font-semibold' 
-                                : 'text-slate-300 hover:bg-white/5 hover:text-white'
-                            }`}
+                            className={`w-full text-left px-3 py-2 text-xs rounded-lg transition-colors truncate ${selectedCategory === c && !showFavoritesOnly
+                              ? 'bg-cyan-500/10 text-cyan-400 font-semibold'
+                              : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                              }`}
                           >
                             {c}
                           </button>
@@ -564,7 +560,7 @@ export default function App() {
                 Channels Found: <strong className="text-cyan-400">{filteredAndSortedChannels.length}</strong>
               </span>
               {selectedCategory !== 'All' && (
-                <button 
+                <button
                   onClick={() => setSelectedCategory('All')}
                   className="text-cyan-400 hover:underline hover:text-cyan-300"
                 >
@@ -622,8 +618,8 @@ export default function App() {
 
           {/* Interactive Scroll End observer mark */}
           {visibleCount < filteredAndSortedChannels.length && (
-            <div 
-              ref={loadMoreRef} 
+            <div
+              ref={loadMoreRef}
               className="py-12 flex items-center justify-center"
             >
               <div className="w-6 h-6 border-2 border-cyan-400/20 border-t-cyan-400 rounded-full animate-spin" />
@@ -647,103 +643,102 @@ export default function App() {
               flex flex-col overflow-hidden
               transition-transform duration-300 ease-in-out
             ">
-            {/* Sidebar title */}
-            <div className="p-4 flex items-center justify-between border-b border-gray-800 bg-[#0a0f1d] flex-shrink-0">
-              <div className="flex items-center gap-1.5 text-cyan-400">
-                <Sliders className="w-3.5 h-3.5" />
-                <h2 className="font-bold text-[10px] uppercase tracking-widest text-[#FFFFFF]">Dashboard Hub</h2>
-              </div>
-              <button 
-                onClick={() => setShowSidebar(false)}
-                className="p-1 rounded-full hover:bg-gray-800/60 text-gray-400 hover:text-white"
-                title="Hide Sidebar"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-            {/* Playlist Source Pill badge */}
-            <div className="p-4 border-b border-gray-800 flex flex-col gap-1.5 flex-shrink-0 bg-[#0b1120]/40">
-              <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Playlist Info</h3>
-              <div className="flex items-center justify-between bg-gray-900 border border-gray-850 rounded px-2.5 py-1.5">
-                <p className="text-[9px] text-[#06B6D4] font-mono truncate w-40" title={playlistUrl}>
-                  {playlistUrl}
-                </p>
-                <button 
-                  onClick={() => setShowSettings(true)}
-                  className="text-[9px] text-white hover:text-cyan-400 font-bold uppercase transition"
+              {/* Sidebar title */}
+              <div className="p-4 flex items-center justify-between border-b border-gray-800 bg-[#0a0f1d] flex-shrink-0">
+                <div className="flex items-center gap-1.5 text-cyan-400">
+                  <Sliders className="w-3.5 h-3.5" />
+                  <h2 className="font-bold text-[10px] uppercase tracking-widest text-[#FFFFFF]">Dashboard Hub</h2>
+                </div>
+                <button
+                  onClick={() => setShowSidebar(false)}
+                  className="p-1 rounded-full hover:bg-gray-800/60 text-gray-400 hover:text-white"
+                  title="Hide Sidebar"
                 >
-                  EDIT
+                  <X className="w-3.5 h-3.5" />
                 </button>
               </div>
-            </div>
 
-            {/* Featured channels list */}
-            <div className="flex-1 overflow-hidden flex flex-col">
-              <div className="p-4 pb-2 flex-shrink-0">
-                <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Featured Streams</h3>
+              {/* Playlist Source Pill badge */}
+              <div className="p-4 border-b border-gray-800 flex flex-col gap-1.5 flex-shrink-0 bg-[#0b1120]/40">
+                <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Playlist Info</h3>
+                <div className="flex items-center justify-between bg-gray-900 border border-gray-850 rounded px-2.5 py-1.5">
+                  <p className="text-[9px] text-[#06B6D4] font-mono truncate w-40" title={playlistUrl}>
+                    {playlistUrl}
+                  </p>
+                  <button
+                    onClick={() => setShowSettings(true)}
+                    className="text-[9px] text-white hover:text-cyan-400 font-bold uppercase transition"
+                  >
+                    EDIT
+                  </button>
+                </div>
               </div>
-              <div className="flex-1 overflow-y-auto custom-scrollbar">
-                {channels.slice(0, 10).map((ch) => {
-                  const isActive = activeChannel?.id === ch.id;
-                  return (
-                    <button
-                      key={`side-${ch.id}`}
-                      onClick={() => handleSelectChannel(ch)}
-                      className={`w-full p-3 border-b border-gray-800 flex items-center gap-3 transition-all text-left outline-none relative group ${
-                        isActive ? 'active-channel' : 'bg-transparent hover:bg-gray-800/20'
-                      }`}
-                    >
-                      {ch.logo ? (
-                        <img 
-                          src={ch.logo}
-                          alt=""
-                          className="w-10 h-10 object-contain rounded bg-white p-1 flex-shrink-0 shadow-sm border border-gray-800"
-                          onError={(e) => {
-                            (e.target as HTMLElement).style.display = 'none';
-                          }}
-                        />
-                      ) : (
-                        <div className="w-10 h-10 bg-gray-800 rounded flex items-center justify-center flex-shrink-0 border border-gray-850">
-                          <span className="text-[10px] text-cyan-400 font-bold font-mono">
-                            {ch.name.slice(0, 3).toUpperCase()}
-                          </span>
+
+              {/* Featured channels list */}
+              <div className="flex-1 overflow-hidden flex flex-col">
+                <div className="p-4 pb-2 flex-shrink-0">
+                  <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Featured Streams</h3>
+                </div>
+                <div className="flex-1 overflow-y-auto custom-scrollbar">
+                  {channels.slice(0, 10).map((ch) => {
+                    const isActive = activeChannel?.id === ch.id;
+                    return (
+                      <button
+                        key={`side-${ch.id}`}
+                        onClick={() => handleSelectChannel(ch)}
+                        className={`w-full p-3 border-b border-gray-800 flex items-center gap-3 transition-all text-left outline-none relative group ${isActive ? 'active-channel' : 'bg-transparent hover:bg-gray-800/20'
+                          }`}
+                      >
+                        {ch.logo ? (
+                          <img
+                            src={ch.logo}
+                            alt=""
+                            className="w-10 h-10 object-contain rounded bg-white p-1 flex-shrink-0 shadow-sm border border-gray-800"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <div className="w-10 h-10 bg-gray-800 rounded flex items-center justify-center flex-shrink-0 border border-gray-850">
+                            <span className="text-[10px] text-cyan-400 font-bold font-mono">
+                              {ch.name.slice(0, 3).toUpperCase()}
+                            </span>
+                          </div>
+                        )}
+
+                        <div className="min-w-0 flex-grow">
+                          <h4 className={`text-xs font-bold truncate group-hover:text-white ${isActive ? 'text-cyan-400' : 'text-gray-300'}`}>
+                            {ch.name}
+                          </h4>
+                          <p className="text-[9px] text-gray-500 truncate uppercase mt-0.5 tracking-tighter">
+                            {ch.category || 'LIVE'} • {ch.country || 'HD'}
+                          </p>
                         </div>
-                      )}
-                      
-                      <div className="min-w-0 flex-grow">
-                        <h4 className={`text-xs font-bold truncate group-hover:text-white ${isActive ? 'text-cyan-400' : 'text-gray-300'}`}>
-                          {ch.name}
-                        </h4>
-                        <p className="text-[9px] text-gray-500 truncate uppercase mt-0.5 tracking-tighter">
-                          {ch.category || 'LIVE'} • {ch.country || 'HD'}
-                        </p>
-                      </div>
 
-                      {isActive ? (
-                        <svg className="w-4 h-4 text-cyan-500" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 000-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                        </svg>
-                      ) : (
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      )}
-                    </button>
-                  );
-                })}
+                        {isActive ? (
+                          <svg className="w-4 h-4 text-cyan-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 000-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                          </svg>
+                        ) : (
+                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
 
-            {/* Live TV FAQ Tip Box */}
-            <div className="p-4 border-t border-gray-800 bg-[#0a0f1d] flex flex-col gap-1.5 flex-shrink-0">
-              <div className="flex items-center gap-1 text-[10px] font-bold text-cyan-400 uppercase tracking-widest">
-                <Info className="w-3.5 h-3.5" />
-                <span>Streaming Tip</span>
+              {/* Live TV FAQ Tip Box */}
+              <div className="p-4 border-t border-gray-800 bg-[#0a0f1d] flex flex-col gap-1.5 flex-shrink-0">
+                <div className="flex items-center gap-1 text-[10px] font-bold text-cyan-400 uppercase tracking-widest">
+                  <Info className="w-3.5 h-3.5" />
+                  <span>Streaming Tip</span>
+                </div>
+                <p className="text-[10px] leading-relaxed text-gray-500 font-medium">
+                  Ensure remote streams have CORS access configured on remote host for HLS.js streaming.
+                </p>
               </div>
-              <p className="text-[10px] leading-relaxed text-gray-500 font-medium">
-                Ensure remote streams have CORS access configured on remote host for HLS.js streaming.
-              </p>
-            </div>
-          </aside>
+            </aside>
           </>
         )}
 
@@ -751,7 +746,7 @@ export default function App() {
 
       {/* Playlist configuration modal */}
       {showSettings && (
-        <SettingsModal 
+        <SettingsModal
           currentUrl={playlistUrl}
           onSave={(url) => {
             setPlaylistUrl(url);
@@ -774,7 +769,16 @@ export default function App() {
 
       {/* Simple footer metadata bar */}
       <footer className="py-4 text-center text-[10px] text-slate-500 border-t border-white/5 mt-auto bg-[#070a13]">
-        <p>© 2026 BD-TV Experience. Powered by HLS.js streaming cores.</p>
+        <p>© 2026 BD-TV Experience. Developed by{' '}
+          <a
+            href="https://saumik.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cyan-400 hover:text-cyan-300 hover:underline transition-colors"
+          >
+            Saumik
+          </a></p>
+
       </footer>
     </div>
   );
