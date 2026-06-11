@@ -420,7 +420,7 @@ export default function LivePlayer({
             <span className="inline md:hidden">{streamHealth}</span>
           </div>
 
-          <div className="flex items-center gap-1 md:gap-1.5 bg-gray-850/80 border border-gray-700/85 text-gray-300 text-[8px] md:text-[10px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 md:px-2.5 md:py-1 rounded shadow-lg">
+          <div className="flex items-center gap-1 md:gap-1.5 bg-slate-800/80 border border-gray-700/85 text-gray-300 text-[8px] md:text-[10px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 md:px-2.5 md:py-1 rounded shadow-lg">
             <Users className="w-2.5 h-2.5 md:w-3 md:h-3 text-cyan-400" />
             <span className="hidden md:inline">{channel.viewsCount || '45K Viewers'}</span>
             <span className="inline md:hidden">{channel.viewsCount || '45K'}</span>
